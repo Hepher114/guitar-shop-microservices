@@ -1,6 +1,6 @@
-# 🎸 GuitarShop — Polyglot Microservices E-Commerce
+#  GuitarShop — Microservices E-Commerce
 
-A polyglot microservices e-commerce application for guitars, amps, and accessories.
+A microservices e-commerce application for guitars, amps, and accessories.
 
 Built with **Go, Java, Node.js, MySQL, Redis, PostgreSQL, RabbitMQ, and Docker Compose**.
 
@@ -8,7 +8,9 @@ Runs fully locally with Docker.
 
 ---
 
-## 🏗 Architecture
+## Component Diagram
+![alt text](<f7d13477-b8a0-4e36-9972-9aef731c5815 (1).png>)
+##  Architecture Diagram
 
 ```mermaid
 flowchart TB
@@ -55,11 +57,6 @@ flowchart TB
   - Orders consumes the event asynchronously.
   - The user gets an instant response while order processing happens in the background.
 
-This demonstrates:
-- Polyglot microservices
-- Event-driven architecture
-- Asynchronous processing
-- Clean service isolation
 
 ---
 
@@ -81,7 +78,7 @@ This demonstrates:
 
 ---
 
-## 🐳 Run Locally
+##  Run Locally
 
 Clone the repository:
 
@@ -110,21 +107,4 @@ docker compose down -v
 ```
 
 ---
-
-## 📂 Project Structure
-
-```
-guitar-shop-microservices/
-├── docker-compose.yml
-├── README.md
-└── services/
-    ├── catalog/     (Go)
-    ├── cart/        (Java)
-    ├── checkout/    (Node.js)
-    ├── orders/      (Java)
-    └── ui/          (Java + Thymeleaf)
-```
-
-
-
 
