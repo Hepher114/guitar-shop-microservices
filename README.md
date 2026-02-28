@@ -8,6 +8,9 @@ Runs fully locally with Docker.
 
 ---
 
+## Preview 
+![alt text](<Screenshot 2026-02-28 at 3.01.20 PM.png>)
+
 ## Component Diagram
 <img src="./images/diagram.png" width="1000"/>
 
