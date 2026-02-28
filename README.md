@@ -10,6 +10,7 @@ Runs fully locally with Docker.
 
 ## Component Diagram
 <img src="./images/diagram.png" width="1000"/>
+
 ##  Architecture Diagram
 
 ```mermaid
