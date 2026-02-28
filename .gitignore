@@ -28,3 +28,9 @@ Thumbs.db
 # Kubernetes secrets (never commit real secrets)
 *-secret-real.yaml
 secrets-override.yaml
+
+.claude/
+*.png
+README.dev.md
+READMEproject.md
+infrastructure/
