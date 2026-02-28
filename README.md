@@ -39,13 +39,12 @@ flowchart TB
   ORDERS --> PG2
 
   CHECKOUT -->|ORDER_CREATED| MQ
-  MQ -->|Consume Event| ORDERS
+  MQ -->|Event| ORDERS
 
-  classDef svc fill:#eef6ff,stroke:#2563eb,stroke-width:1px;
-  classDef db fill:#fff7ed,stroke:#ea580c,stroke-width:1px;
-  classDef mq fill:#f5f3ff,stroke:#7c3aed,stroke-width:1px;
+  classDef svc fill:#eef6ff,stroke:#2563eb,stroke-width:1px,color:#111111;
+  classDef db fill:#fff7ed,stroke:#ea580c,stroke-width:1px,color:#111111;
+  classDef mq fill:#f5f3ff,stroke:#7c3aed,stroke-width:1px,color:#111111;
 ```
-
 ---
 
 ## How It Works
