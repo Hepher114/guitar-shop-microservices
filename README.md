@@ -9,7 +9,7 @@ Runs fully locally with Docker.
 ---
 
 ## Component Diagram
-![alt text](<f7d13477-b8a0-4e36-9972-9aef731c5815 (1).png>)
+<img src="./images/diagram.png" width="1000"/>
 ##  Architecture Diagram
 
 ```mermaid
