@@ -29,8 +29,5 @@ Thumbs.db
 *-secret-real.yaml
 secrets-override.yaml
 
-.claude/
-*.png
-README.dev.md
-READMEproject.md
+
 infrastructure/
