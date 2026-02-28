@@ -9,7 +9,7 @@ Runs fully locally with Docker.
 ---
 
 ## Preview 
-<img src="./images/preview.png.png" width="1000"/>
+<img src="./images/preview.png" width="1000"/>
 
 ## Component Diagram
 <img src="./images/diagram.png" width="1000"/>

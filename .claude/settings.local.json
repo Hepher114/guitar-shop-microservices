@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose build:*)",
+      "Bash(docker compose up:*)",
+      "Bash(curl:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker compose down:*)",
+      "Bash(docker volume ls:*)",
+      "Bash(docker-compose -f /Users/hepher/Desktop/Projects/guitarshop/docker-compose.yml ps)"
+    ]
+  }
+}
