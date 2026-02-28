@@ -1,0 +1,30 @@
+# Java
+target/
+*.class
+*.jar
+*.war
+.mvn/
+
+# Go
+*.exe
+vendor/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Docker
+.docker/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kubernetes secrets (never commit real secrets)
+*-secret-real.yaml
+secrets-override.yaml

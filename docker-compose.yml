@@ -1,0 +1,226 @@
+version: "3.9"
+
+# ─── GuitarShop — Local Development Stack ─────────────────────────────────────
+#
+# 10-container application:
+#   5 microservices: ui, catalog, cart, checkout, orders
+#   3 databases:     catalog-db (MySQL), checkout-db (PostgreSQL), orders-db (PostgreSQL)
+#   1 cache:         cart-redis (Redis)
+#   1 messaging:     rabbitmq (RabbitMQ)
+#
+# Usage:
+#   docker compose up --build
+#   Access: http://localhost:8080
+
+networks:
+  guitarshop-net:
+    driver: bridge
+
+volumes:
+  catalog-db-data:
+  checkout-db-data:
+  orders-db-data:
+  redis-data:
+  rabbitmq-data:
+
+# ─── Common health-check defaults ─────────────────────────────────────────────
+x-healthcheck-defaults: &hc-defaults
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start_period: 30s
+
+services:
+
+  # ─── Infrastructure ──────────────────────────────────────────────────────────
+
+  catalog-db:
+    image: mysql:8.0
+    container_name: guitarshop-catalog-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE:      guitarshop_catalog
+      MYSQL_USER:          guitarshop
+      MYSQL_PASSWORD:      guitarshop123
+    volumes:
+      - catalog-db-data:/var/lib/mysql
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "guitarshop", "-pguitarshop123"]
+      <<: *hc-defaults
+
+  checkout-db:
+    image: postgres:15-alpine
+    container_name: guitarshop-checkout-db
+    environment:
+      POSTGRES_DB:       guitarshop_checkout
+      POSTGRES_USER:     guitarshop
+      POSTGRES_PASSWORD: guitarshop123
+    volumes:
+      - checkout-db-data:/var/lib/postgresql/data
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guitarshop -d guitarshop_checkout"]
+      <<: *hc-defaults
+
+  orders-db:
+    image: postgres:15-alpine
+    container_name: guitarshop-orders-db
+    environment:
+      POSTGRES_DB:       guitarshop_orders
+      POSTGRES_USER:     guitarshop
+      POSTGRES_PASSWORD: guitarshop123
+    volumes:
+      - orders-db-data:/var/lib/postgresql/data
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U guitarshop -d guitarshop_orders"]
+      <<: *hc-defaults
+
+  cart-redis:
+    image: redis:7-alpine
+    container_name: guitarshop-redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      <<: *hc-defaults
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: guitarshop-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guitarshop
+      RABBITMQ_DEFAULT_PASS: guitarshop123
+    ports:
+      - "15672:15672"   # Management UI
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      <<: *hc-defaults
+
+  # ─── Microservices ────────────────────────────────────────────────────────────
+
+  catalog:
+    build:
+      context: ./services/catalog
+      dockerfile: Dockerfile
+    container_name: guitarshop-catalog
+    environment:
+      DB_HOST:     catalog-db
+      DB_PORT:     "3306"
+      DB_NAME:     guitarshop_catalog
+      DB_USER:     guitarshop
+      DB_PASSWORD: guitarshop123
+      PORT:        "8080"
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      <<: *hc-defaults
+
+  cart:
+    build:
+      context: ./services/cart
+      dockerfile: Dockerfile
+    container_name: guitarshop-cart
+    environment:
+      REDIS_HOST: cart-redis
+      REDIS_PORT: "6379"
+    depends_on:
+      cart-redis:
+        condition: service_healthy
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/cart/health || exit 1"]
+      <<: *hc-defaults
+
+  checkout:
+    build:
+      context: ./services/checkout
+      dockerfile: Dockerfile
+    container_name: guitarshop-checkout
+    environment:
+      DB_HOST:       checkout-db
+      DB_PORT:       "5432"
+      DB_NAME:       guitarshop_checkout
+      DB_USER:       guitarshop
+      DB_PASSWORD:   guitarshop123
+      RABBITMQ_URL:  amqp://guitarshop:guitarshop123@rabbitmq:5672
+      PORT:          "8080"
+    depends_on:
+      checkout-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      <<: *hc-defaults
+
+  orders:
+    build:
+      context: ./services/orders
+      dockerfile: Dockerfile
+    container_name: guitarshop-orders
+    environment:
+      DB_HOST:           orders-db
+      DB_PORT:           "5432"
+      DB_NAME:           guitarshop_orders
+      DB_USER:           guitarshop
+      DB_PASSWORD:       guitarshop123
+      RABBITMQ_HOST:     rabbitmq
+      RABBITMQ_PORT:     "5672"
+      RABBITMQ_USER:     guitarshop
+      RABBITMQ_PASSWORD: guitarshop123
+    depends_on:
+      orders-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/orders/health || exit 1"]
+      <<: *hc-defaults
+
+  ui:
+    build:
+      context: ./services/ui
+      dockerfile: Dockerfile
+    container_name: guitarshop-ui
+    environment:
+      CATALOG_SERVICE_URL:  http://catalog:8080
+      CART_SERVICE_URL:     http://cart:8080
+      CHECKOUT_SERVICE_URL: http://checkout:8080
+      ORDERS_SERVICE_URL:   http://orders:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      catalog:
+        condition: service_healthy
+      cart:
+        condition: service_healthy
+      checkout:
+        condition: service_healthy
+      orders:
+        condition: service_healthy
+    networks:
+      - guitarshop-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      <<: *hc-defaults
