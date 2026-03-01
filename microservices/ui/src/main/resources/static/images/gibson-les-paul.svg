@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <!-- Les Paul body - rounder shape -->
+  <ellipse cx="200" cy="160" rx="60" ry="75" fill="none" stroke="#C0392B" stroke-width="3" opacity="0.8"/>
+  <ellipse cx="200" cy="145" rx="45" ry="55" fill="none" stroke="#C0392B" stroke-width="2" opacity="0.4"/>
+  <!-- Pickups -->
+  <rect x="185" y="130" width="30" height="10" rx="3" fill="none" stroke="#C0392B" stroke-width="1.5" opacity="0.5"/>
+  <rect x="185" y="155" width="30" height="10" rx="3" fill="none" stroke="#C0392B" stroke-width="1.5" opacity="0.5"/>
+  <!-- Neck -->
+  <rect x="195" y="60" width="10" height="90" rx="3" fill="none" stroke="#C0392B" stroke-width="2" opacity="0.6"/>
+  <!-- Headstock -->
+  <path d="M190 45 L185 35 L195 30 L205 30 L215 35 L210 45 Z" fill="none" stroke="#C0392B" stroke-width="2" opacity="0.6"/>
+  <text x="200" y="260" text-anchor="middle" fill="#ffffff" font-family="Segoe UI,system-ui,sans-serif" font-size="16" font-weight="600">Gibson Les Paul</text>
+  <text x="200" y="280" text-anchor="middle" fill="#C0392B" font-family="Segoe UI,system-ui,sans-serif" font-size="12" opacity="0.8">GIBSON</text>
+</svg>

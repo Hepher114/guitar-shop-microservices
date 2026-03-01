@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>My Orders — GuitarShop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" th:href="@{/css/guitarshop.css}"/>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<div class="container my-5">
+  <h2 class="mb-4"><i class="fas fa-list me-2 text-warning"></i>My Orders</h2>
+
+  <!-- No orders -->
+  <div th:if="${#lists.isEmpty(orders)}" class="text-center py-5">
+    <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+    <h4 class="text-muted">No orders yet</h4>
+    <a href="/" class="btn btn-warning mt-3">Start Shopping</a>
+  </div>
+
+  <!-- Orders list -->
+  <div th:unless="${#lists.isEmpty(orders)}">
+    <div class="card shadow-sm mb-4" th:each="order : ${orders}">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <span class="fw-bold font-monospace small" th:text="'Order #' + ${order.id}">Order #ID</span>
+          <span class="text-muted small ms-3" th:text="${order.createdAt}">Date</span>
+        </div>
+        <div>
+          <!-- Status badge colours -->
+          <span th:switch="${order.status}">
+            <span th:case="'PENDING'"     class="badge bg-warning text-dark">PENDING</span>
+            <span th:case="'CONFIRMED'"   class="badge bg-info text-dark">CONFIRMED</span>
+            <span th:case="'PROCESSING'"  class="badge bg-primary">PROCESSING</span>
+            <span th:case="'SHIPPED'"     class="badge bg-secondary">SHIPPED</span>
+            <span th:case="'DELIVERED'"   class="badge bg-success">DELIVERED</span>
+            <span th:case="'CANCELLED'"   class="badge bg-danger">CANCELLED</span>
+            <span th:case="*"             class="badge bg-secondary" th:text="${order.status}">STATUS</span>
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-8">
+            <div th:each="item : ${order.items}" class="d-flex align-items-center mb-2">
+              <img th:src="${item.imageUrl} ?: '/images/placeholder.svg'"
+                   class="rounded me-3" width="50" height="50"
+                   style="object-fit:cover" onerror="this.src='/images/placeholder.svg'"/>
+              <div>
+                <p class="mb-0 fw-semibold" th:text="${item.name}">Item Name</p>
+                <small class="text-muted"
+                       th:text="${item.brand} + ' · Qty: ' + ${item.quantity}">Brand · Qty: 1</small>
+              </div>
+              <span class="ms-auto fw-semibold"
+                    th:text="'$' + ${#numbers.formatDecimal(item.price * item.quantity, 1, 2)}">$0.00</span>
+            </div>
+          </div>
+          <div class="col-md-4 border-start">
+            <p class="mb-1 text-muted small">Order Total</p>
+            <h4 class="text-success fw-bold"
+                th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}">$0.00</h4>
+            <p class="mb-0 text-muted small" th:if="${order.email != null}">
+              <i class="fas fa-envelope me-1"></i><span th:text="${order.email}">email</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments/layout :: footer}"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <!-- String pack outline -->
+  <rect x="140" y="55" width="120" height="170" rx="12" fill="none" stroke="#E91E8B" stroke-width="3" opacity="0.8"/>
+  <!-- Strings illustration -->
+  <line x1="170" y1="90" x2="170" y2="190" stroke="#E91E8B" stroke-width="2.5" opacity="0.6"/>
+  <line x1="182" y1="90" x2="182" y2="190" stroke="#E91E8B" stroke-width="2" opacity="0.5"/>
+  <line x1="194" y1="90" x2="194" y2="190" stroke="#E91E8B" stroke-width="1.8" opacity="0.5"/>
+  <line x1="206" y1="90" x2="206" y2="190" stroke="#E91E8B" stroke-width="1.5" opacity="0.4"/>
+  <line x1="218" y1="90" x2="218" y2="190" stroke="#E91E8B" stroke-width="1.2" opacity="0.4"/>
+  <line x1="230" y1="90" x2="230" y2="190" stroke="#E91E8B" stroke-width="0.8" opacity="0.3"/>
+  <!-- Gauge label -->
+  <text x="200" y="215" text-anchor="middle" fill="#E91E8B" font-family="Segoe UI,system-ui,sans-serif" font-size="10" opacity="0.6">10-46</text>
+  <text x="200" y="260" text-anchor="middle" fill="#ffffff" font-family="Segoe UI,system-ui,sans-serif" font-size="16" font-weight="600">Regular Slinky</text>
+  <text x="200" y="280" text-anchor="middle" fill="#E91E8B" font-family="Segoe UI,system-ui,sans-serif" font-size="12" opacity="0.8">ERNIE BALL</text>
+</svg>
