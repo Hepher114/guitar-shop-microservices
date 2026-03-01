@@ -51,7 +51,7 @@ flowchart TB
 ```
 ---
 
-## How It Works
+## Functionality
 
 - The **UI Service** communicates with backend services using HTTP.
 - Each service owns its own database (Database per Service pattern).
