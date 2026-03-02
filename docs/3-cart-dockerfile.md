@@ -22,6 +22,7 @@ cd cart
 vim Dockerfile
 ```
 
+Dockerfile:
 ```dockerfile
 # Stage 1 — Build
 FROM maven:3.9-eclipse-temurin-17 AS builder   # Maven + Java 17 to compile the code
@@ -104,8 +105,10 @@ docker run -d \
 
 ## VII. Verify
 
+Replace `<EC2-PUBLIC-IP>` with your EC2 instance's public IP address.
+
 ```bash
-curl http://localhost:8080/cart/health
+curl http://<EC2-PUBLIC-IP>:8080/cart/health
 ```
 
 Expected response:
