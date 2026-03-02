@@ -112,7 +112,7 @@ services:
 
   catalog:
     build:
-      context: ./services/catalog
+      context: ./microservices/catalog
       dockerfile: Dockerfile
     container_name: guitarshop-catalog
     environment:
@@ -133,7 +133,7 @@ services:
 
   cart:
     build:
-      context: ./services/cart
+      context: ./microservices/cart
       dockerfile: Dockerfile
     container_name: guitarshop-cart
     environment:
@@ -150,7 +150,7 @@ services:
 
   checkout:
     build:
-      context: ./services/checkout
+      context: ./microservices/checkout
       dockerfile: Dockerfile
     container_name: guitarshop-checkout
     environment:
@@ -174,7 +174,7 @@ services:
 
   orders:
     build:
-      context: ./services/orders
+      context: ./microservices/orders
       dockerfile: Dockerfile
     container_name: guitarshop-orders
     environment:
@@ -200,7 +200,7 @@ services:
 
   ui:
     build:
-      context: ./services/ui
+      context: ./microservices/ui
       dockerfile: Dockerfile
     container_name: guitarshop-ui
     environment:

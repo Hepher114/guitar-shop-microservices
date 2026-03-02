@@ -63,6 +63,7 @@
   </dependencies>
 
   <build>
+    <finalName>cart-service</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
