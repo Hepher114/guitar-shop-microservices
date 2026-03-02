@@ -13,7 +13,14 @@ It uses a two-stage Docker build to keep the final image small and secure.
 
 ---
 
-## II. The Dockerfile Explained
+## II. Create the Cart Service Dockerfile
+
+Navigate to the cart service directory and create the Dockerfile.
+
+```bash
+cd cart
+vim Dockerfile
+```
 
 ```dockerfile
 # Stage 1 — Build
@@ -21,13 +28,13 @@ FROM maven:3.9-eclipse-temurin-17 AS builder   # Maven + Java 17 to compile the 
 
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline -B               # Download dependencies (cached layer)
+RUN mvn dependency:go-offline -B            
 
 COPY src ./src
-RUN mvn clean package -DskipTests -B           # Compile into a .jar file
+RUN mvn clean package -DskipTests -B           
 
 # Stage 2 — Runtime
-FROM gcr.io/distroless/java17-debian12         # Minimal image, no shell, no extra tools
+FROM gcr.io/distroless/java17-debian12         
 
 WORKDIR /app
 COPY --from=builder /app/target/cart-service.jar app.jar
@@ -41,9 +48,6 @@ ENTRYPOINT ["java","-jar", "app.jar"]
 |---------|-----------------------------------|----------------------------------|
 | builder | maven:3.9-eclipse-temurin-17      | Compile Java source into a jar   |
 | runtime | gcr.io/distroless/java17-debian12 | Run the jar, nothing else        |
-
-> The Dockerfile has no mention of Redis. The app reads `REDIS_HOST` and `REDIS_PORT`
-> from environment variables at runtime — injected via `docker run -e`.
 
 ---
 
@@ -74,9 +78,6 @@ docker run -d \
 cd microservices/cart
 docker build -t guitarshop-cart-test .
 ```
-
-> First build takes ~2-3 minutes (downloads Maven + dependencies).
-> Subsequent builds are fast due to layer caching.
 
 ---
 
