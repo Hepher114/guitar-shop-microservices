@@ -81,7 +81,7 @@ flowchart TB
 
 ---
 
-## Project Structure
+## Repo Structure
 
 | Folder | Description |
 |---|---|
