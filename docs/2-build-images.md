@@ -2,9 +2,8 @@
 
 ## I. Prerequisites
 
-- ✅ EC2 instance running
-- ✅ Docker installed
-- ✅ App code pushed to GitHub by the dev team
+-  EC2 instance running
+-  Docker installed
 
 ---
 
@@ -20,7 +19,7 @@ git --version
 ## III. Clone the Repository
 
 ```bash
-git clone https://github.com/Hepher114/guitarShop-App.git
+git clone https://github.com/Hepher-Ossounga/guitarShop-App.git
 cd guitarshop-app
 ```
 
